@@ -347,9 +347,14 @@
 
 #define DIRECT_PWM_CAPTURE_CHANNELS  3
 
-/* TIM5_CH4 SPARE PIN */
-#define GPIO_TIM5_CH4IN    /* PI0   T5C4  TIM5_SPARE_4 */  GPIO_TIM5_CH4IN_2
-#define GPIO_TIM5_CH4OUT   /* PI0   T5C4  TIM5_SPARE_4 */   GPIO_TIM5_CH4OUT_2
+/* PI0 is nARMED
+ *  The GPIO will be set as input while not armed HW will have external HW Pull UP.
+ *  While armed it shall be configured at a GPIO OUT set LOW
+ */
+#define GPIO_nARMED_INIT     /* PI0 */  (GPIO_INPUT|GPIO_PULLUP|GPIO_PORTI|GPIO_PIN1)
+#define GPIO_nARMED          /* PI0 */  (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTI|GPIO_PIN1)
+
+#define BOARD_INDICATE_ARMED_STATE(on_armed)  px4_arch_configgpio((on_armed) ? GPIO_nARMED : GPIO_nARMED_INIT)
 
 /* PWM
  *
